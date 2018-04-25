@@ -12,5 +12,5 @@ public interface BaseView {
      * 获取上下文
      * @return
      */
-    Context getContext();
+    Context getViewContext();
 }

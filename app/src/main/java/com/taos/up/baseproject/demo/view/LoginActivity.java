@@ -22,28 +22,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     private EditText etPwd;
     private Button btnLogin;
 
-    @Override
-    protected void initData(Bundle bundle) {
-
-    }
-
-    @Override
-    protected int bindLayout() {
-        return R.layout.activity_login;
-    }
-
-    @Override
-    protected void initView(Bundle savedInstanceState, View view) {
-        etId = (EditText) findViewById(R.id.et_id);
-        etPwd = (EditText) findViewById(R.id.et_pwd);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-    }
-
-    @Override
-    protected void initListener() {
-        btnLogin.setOnClickListener(this);
-    }
-
     /**
      * 初始化该View的presenter
      * @return
@@ -51,15 +29,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     protected LoginPresenter buildPresenter() {
         return new LoginPresenter();
-    }
-
-    @Override
-    protected void onWidgetClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_login:
-                checkData();
-                break;
-        }
     }
 
     /**
@@ -82,5 +51,32 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     public void showLoginSuccess(String s) {
         Toast.makeText(mActivity, "登录成功", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected int getLayout() {
+         return R.layout.activity_login;
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    public void initView(Bundle savedInstanceState) {
+        etId = (EditText) findViewById(R.id.et_id);
+        etPwd = (EditText) findViewById(R.id.et_pwd);
+        btnLogin = (Button) findViewById(R.id.btn_login);
+    }
+
+    @Override
+    protected void initEventLoadData() {
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkData();
+            }
+        });
     }
 }
