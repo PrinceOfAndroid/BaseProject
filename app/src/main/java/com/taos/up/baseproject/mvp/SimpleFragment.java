@@ -17,16 +17,17 @@ import butterknife.Unbinder;
  * 非mvp基类Fragment
  */
 
-public abstract class SimpleFragment extends Fragment  {
+public abstract class SimpleFragment extends Fragment {
     private static final String STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN";
     /**
      * 当前Activity渲染的视图View
      */
     protected View contentView;
 
-    private boolean isFirstVisible;
+    private boolean isUIVisible;
 
     private Unbinder mUnBinder;
+    private boolean isViewCreated;
 
 
     @Override
@@ -45,6 +46,36 @@ public abstract class SimpleFragment extends Fragment  {
             ft.commit();
         }
     }
+
+    /**
+     * viewPager+fragment的懒加载  暂时写在这里
+     *
+     * @param isVisibleToUser
+     */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        //isVisibleToUser这个boolean值表示:该Fragment的UI 用户是否可见
+        if (isVisibleToUser) {
+            isUIVisible = true;
+            firstLoad();
+        } else {
+            isUIVisible = false;
+        }
+    }
+
+    private void firstLoad() {
+        //这里进行双重标记判断,是因为setUserVisibleHint会多次回调,并且会在onCreateView执行前回调,必须确保onCreateView加载完毕且页面可见,才加载数据
+        if (isViewCreated && isUIVisible) {
+            lazyLoad();
+            //数据加载完毕,恢复标记,防止重复加载
+            isViewCreated = false;
+            isUIVisible = false;
+        }
+    }
+
+
+
 
     /**
      * 创建fragment中的View
@@ -82,11 +113,8 @@ public abstract class SimpleFragment extends Fragment  {
             onCreateFinish();
             initEventLoadData();
 
-            if (getUserVisibleHint() && isFirstVisible) {
-                lazyLoad();
-                isFirstVisible = false;
-            }
-
+            isViewCreated = true;
+            firstLoad();
             onFragmentVisibleChange(getUserVisibleHint());
         }
 
@@ -98,6 +126,7 @@ public abstract class SimpleFragment extends Fragment  {
 
     /**
      * 初始化数据
+     *
      * @param bundle
      */
     protected abstract void initData(Bundle bundle);
@@ -115,7 +144,6 @@ public abstract class SimpleFragment extends Fragment  {
 
     private void initVariable() {
         contentView = null;
-        isFirstVisible = true;
     }
 
     /**************************************************************
@@ -134,12 +162,10 @@ public abstract class SimpleFragment extends Fragment  {
 
     }
 
-    /**
-     * 第一次可见 可选择重写（懒加载模式）
-     */
-    public void lazyLoad() {
+    protected void lazyLoad() {
 
     }
+
 
 
     @Override
