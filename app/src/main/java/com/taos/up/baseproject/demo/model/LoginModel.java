@@ -7,6 +7,8 @@ import com.taos.up.baseproject.http.HttpResponse;
 import com.taos.up.baseproject.http.RetrofitFactory;
 import com.taos.up.baseproject.http.RxUtils;
 
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
 
 
 /**
@@ -17,13 +19,10 @@ import com.taos.up.baseproject.http.RxUtils;
 public class LoginModel implements LoginContract.IModel {
     /**
      * @param user
-     * @param httpObserver 接口访问的回调
      */
     @Override
-    public void login(User user, HttpObserver<String> httpObserver) {
-        RetrofitFactory.getInstance()
-                .login(user)
-                .compose(RxUtils.<HttpResponse<String>>applySchedulers())
-                .subscribe(httpObserver);
+    public Flowable<HttpResponse<String>> login(User user) {
+        return RetrofitFactory.getInstance()
+                .login(user);
     }
 }

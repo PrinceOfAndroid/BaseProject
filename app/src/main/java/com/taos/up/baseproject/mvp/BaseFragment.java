@@ -30,7 +30,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends SimpleFragme
     @Override
     public void onDestroy() {
         if (mPresenter != null) {
-            mPresenter.onDestory();
+            mPresenter.onDestroy();
         }
         super.onDestroy();
     }

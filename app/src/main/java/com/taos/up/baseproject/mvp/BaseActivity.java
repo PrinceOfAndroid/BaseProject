@@ -49,7 +49,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends SimpleActivi
     @Override
     protected void onDestroy() {
         if (mPresenter != null) {
-            mPresenter.onDestory();
+            mPresenter.onDestroy();
         }
         super.onDestroy();
     }

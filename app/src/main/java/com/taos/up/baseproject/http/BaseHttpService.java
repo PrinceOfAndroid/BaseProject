@@ -6,6 +6,7 @@ import com.taos.up.baseproject.demo.beans.User;
 import java.util.Map;
 
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -50,7 +51,7 @@ public interface BaseHttpService {
      * @return
      */
     @POST(ApiUrl.LOGIN)
-    Observable<HttpResponse<String>> login(@Body User user);
+    Flowable<HttpResponse<String>> login(@Body User user);
 
 
     /**

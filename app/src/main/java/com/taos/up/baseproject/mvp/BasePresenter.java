@@ -1,5 +1,8 @@
 package com.taos.up.baseproject.mvp;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 /**
  * Created by PrinceOfAndroid on 2018/4/9 0009.
  * presenter 基类(持有view)
@@ -7,6 +10,7 @@ package com.taos.up.baseproject.mvp;
 
 public abstract class BasePresenter<T extends BaseView> {
     protected T mView;
+    private CompositeDisposable mCompositeDisposable;
 
     /**
      * 绑定 view
@@ -21,7 +25,22 @@ public abstract class BasePresenter<T extends BaseView> {
      * view 解绑
      */
     public void detachView() {
+        unSubscribe();
         this.mView = null;
+    }
+
+    protected void addSubscribe(Disposable subscription) {
+        if (mCompositeDisposable == null) {
+            mCompositeDisposable = new CompositeDisposable();
+        }
+        mCompositeDisposable.add(subscription);
+
+    }
+
+    protected void unSubscribe() {
+        if (mCompositeDisposable != null) {
+            mCompositeDisposable.clear();
+        }
     }
 
 
@@ -33,7 +52,7 @@ public abstract class BasePresenter<T extends BaseView> {
     /**
      * 销毁view的引用
      */
-    public void onDestory() {
+    public void onDestroy() {
         if (this.mView != null) {
             detachView();
         }

@@ -5,6 +5,7 @@ import com.taos.up.baseproject.demo.contract.LoginContract;
 import com.taos.up.baseproject.demo.model.LoginModel;
 import com.taos.up.baseproject.http.HttpObserver;
 import com.taos.up.baseproject.http.HttpResponse;
+import com.taos.up.baseproject.http.RxUtils;
 import com.taos.up.baseproject.mvp.BasePresenter;
 
 import io.reactivex.disposables.Disposable;
@@ -37,31 +38,16 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
         user.setMobile(userId);
         user.setPassword(userPwd);
         user.setSms_code("");
-        iModel.login(user, new HttpObserver<String>() {
-            @Override
-            public void onSuccess(String s) {
-                mView.showLoginSuccess(s);
-            }
 
-            @Override
-            public void onSuccess(HttpResponse<String> value) {
-                super.onSuccess(value);
-            }
+        addSubscribe(iModel.login(user)
+                .compose(RxUtils.<HttpResponse<String>>applyFSchedulers())
+                .compose(RxUtils.<String>handleResult())
+                .subscribeWith(new HttpObserver<String>() {
+                    @Override
+                    public void onSuccess(String s) {
 
-            @Override
-            public void onFailure(int code, Throwable e, String errorMsg) {
-                super.onFailure(code, e, errorMsg);
-            }
+                    }
+                }));
 
-            @Override
-            public void onSubscribe(Disposable d) {
-                super.onSubscribe(d);
-            }
-
-            @Override
-            public void onComplete() {
-                super.onComplete();
-            }
-        });
     }
 }

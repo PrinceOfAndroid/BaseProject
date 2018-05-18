@@ -2,7 +2,11 @@ package com.taos.up.baseproject.demo.contract;
 
 import com.taos.up.baseproject.demo.beans.User;
 import com.taos.up.baseproject.http.HttpObserver;
+import com.taos.up.baseproject.http.HttpResponse;
 import com.taos.up.baseproject.mvp.BaseView;
+
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
 
 
 /**
@@ -12,7 +16,7 @@ import com.taos.up.baseproject.mvp.BaseView;
 
 public interface LoginContract {
     interface IModel {
-        void login(User user, HttpObserver<String> httpObserver);
+        Flowable<HttpResponse<String>> login(User user);
     }
 
     interface IView extends BaseView {
