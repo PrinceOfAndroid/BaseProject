@@ -48,7 +48,7 @@ public class RxUtils {
 
 
     /**
-     * 预处理
+     * 预处理  code处理
      *
      * @param <T>
      * @return
@@ -60,8 +60,8 @@ public class RxUtils {
                 return upstream.flatMap(new Function<HttpResponse<T>, Flowable<T>>() {
                     @Override
                     public Flowable<T> apply(@NonNull HttpResponse<T> tHttpResponse) throws Exception {
-                        if (tHttpResponse.getCode() == 200) {
-                            return createData(tHttpResponse.getObject());
+                        if (tHttpResponse.getCode() == 0) {
+                            return createData(tHttpResponse.getData());
                         } else {
                             return Flowable.error(new ApiException("服务器返回error"));
                         }

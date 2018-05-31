@@ -1,14 +1,13 @@
 package com.taos.up.baseproject.demo.model;
 
-import com.taos.up.baseproject.demo.beans.User;
 import com.taos.up.baseproject.demo.contract.LoginContract;
-import com.taos.up.baseproject.http.HttpObserver;
 import com.taos.up.baseproject.http.HttpResponse;
 import com.taos.up.baseproject.http.RetrofitFactory;
-import com.taos.up.baseproject.http.RxUtils;
+
+import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 
 
 /**
@@ -18,11 +17,11 @@ import io.reactivex.Observable;
 
 public class LoginModel implements LoginContract.IModel {
     /**
-     * @param user
+     * @param map
      */
     @Override
-    public Flowable<HttpResponse<String>> login(User user) {
+    public Flowable<HttpResponse<List<String>>> getList(Map<String,String> map) {
         return RetrofitFactory.getInstance()
-                .login(user);
+                .getList(map);
     }
 }

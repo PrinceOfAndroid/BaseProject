@@ -9,28 +9,23 @@ mvp基类以及retrofit2+rxJava2+okHttp网络请求的封装
      *
      * @return
      */
-    @POST(ApiUrl.LOGIN)
-    Observable<HttpResponse<UserInfo>> login(@QueryMap Map<String, String> map);
+    @GET(ApiUrl.ARTICLE_LIST)
+    Observable<HttpResponse<List<String>>> getList(@QueryMap Map<String, String> map);
 ```
 
 * 获取实例进行网络请求
 ``` java
-    Map<String, String> map = new HashMap<>();
-    map.put("account", userAccount);
-    map.put("password", userPwd);
-    RetrofitFactory.getInstance()
-        .login(map)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new HttpObserver<UserInfo>() {
-            @Override
-            public void onSuccess(final UserInfo s) {
-                    
-            }
+     Map<String, String> map = new HashMap<>();
+     map.put("is_index", "true");
+     map.put("rows", String.valueOf("3"));
 
-            @Override
-            public void onFailure(int code, String message) {
-                super.onFailure(code, message);
-               }
-           });
+     addSubscribe(iModel.getList(map)
+                   .compose(RxUtils.<HttpResponse<List<String>>>applyFSchedulers())
+                    .compose(RxUtils.<List<String>>handleResult())
+                    .subscribeWith(new CommonSubscriber<List<String>>() {
+                        @Override
+                        public void onSuccess(List<String> strings) {
+
+                        }
+                    }));
 ```

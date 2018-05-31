@@ -1,14 +1,15 @@
 package com.taos.up.baseproject.demo.presenter;
 
-import com.taos.up.baseproject.demo.beans.User;
 import com.taos.up.baseproject.demo.contract.LoginContract;
 import com.taos.up.baseproject.demo.model.LoginModel;
-import com.taos.up.baseproject.http.HttpObserver;
+import com.taos.up.baseproject.http.CommonSubscriber;
 import com.taos.up.baseproject.http.HttpResponse;
 import com.taos.up.baseproject.http.RxUtils;
 import com.taos.up.baseproject.mvp.BasePresenter;
 
-import io.reactivex.disposables.Disposable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by PrinceOfAndroid on 2018/4/9 0009.
@@ -34,17 +35,16 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
      */
     @Override
     public void login(String userId, String userPwd) {
-        User user = new User();
-        user.setMobile(userId);
-        user.setPassword(userPwd);
-        user.setSms_code("");
+        Map<String, String> map = new HashMap<>();
+        map.put("is_index", "true");
+        map.put("rows", String.valueOf("3"));
 
-        addSubscribe(iModel.login(user)
-                .compose(RxUtils.<HttpResponse<String>>applyFSchedulers())
-                .compose(RxUtils.<String>handleResult())
-                .subscribeWith(new HttpObserver<String>() {
+        addSubscribe(iModel.getList(map)
+                .compose(RxUtils.<HttpResponse<List<String>>>applyFSchedulers())
+                .compose(RxUtils.<List<String>>handleResult())
+                .subscribeWith(new CommonSubscriber<List<String>>() {
                     @Override
-                    public void onSuccess(String s) {
+                    public void onSuccess(List<String> strings) {
 
                     }
                 }));

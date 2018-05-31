@@ -10,6 +10,6 @@ public class ApiUrl {
     //基本地址
     public static final String BASE_URL = "";
 
-    //登录
-    public static final String LOGIN = "";
+    //列表
+    public static final String ARTICLE_LIST = "";
 }

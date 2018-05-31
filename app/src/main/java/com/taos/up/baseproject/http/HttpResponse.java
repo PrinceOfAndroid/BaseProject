@@ -9,8 +9,10 @@ package com.taos.up.baseproject.http;
  */
 public class HttpResponse<T> {
     private int code;
-    private String message;
-    private T object;
+
+    private String msg;
+
+    private T data;
 
     public int getCode() {
         return code;
@@ -20,28 +22,19 @@ public class HttpResponse<T> {
         this.code = code;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public T getObject() {
-        return object;
+    public T getData() {
+        return data;
     }
 
-    public void setObject(T object) {
-        this.object = object;
-    }
-
-    @Override
-    public String toString() {
-        return "HttpResponse{" +
-                "code=" + code +
-                ", message='" + message + '\'' +
-                ", object=" + object +
-                '}';
+    public void setData(T data) {
+        this.data = data;
     }
 }

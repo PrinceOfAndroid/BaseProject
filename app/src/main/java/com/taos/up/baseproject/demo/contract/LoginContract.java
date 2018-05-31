@@ -1,12 +1,12 @@
 package com.taos.up.baseproject.demo.contract;
 
-import com.taos.up.baseproject.demo.beans.User;
-import com.taos.up.baseproject.http.HttpObserver;
 import com.taos.up.baseproject.http.HttpResponse;
 import com.taos.up.baseproject.mvp.BaseView;
 
+import java.util.List;
+import java.util.Map;
+
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 
 
 /**
@@ -16,7 +16,7 @@ import io.reactivex.Observable;
 
 public interface LoginContract {
     interface IModel {
-        Flowable<HttpResponse<String>> login(User user);
+        Flowable<HttpResponse<List<String>>> getList(Map<String, String> map);
     }
 
     interface IView extends BaseView {
